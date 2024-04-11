@@ -1,6 +1,6 @@
 export const playersModule = {
   state: () => ({
-    names: [],
+    names: []
   }),
-  mutations: {},
+  mutations: {}
 };

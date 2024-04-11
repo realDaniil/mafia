@@ -1,17 +1,24 @@
 <template>
-  <div>
+  <MyLoader v-if="isLoading" />
+  <div v-else>
     <div v-if="errorMessage">
       <p>{{ errorMessage }}</p>
     </div>
-    <Card v-else :name="player?.name" :role="player?.role" />
+    <div v-else class="holder">
+      <Card :name="player?.name" :role="player?.role" isLoop />
+    </div>
   </div>
+  <BottomNavBar>
+    <button @click="$router.push('/online')">Назад</button>
+    <p>ID: {{ $route.params.id }}</p>
+  </BottomNavBar>
 </template>
 
 <script lang="ts">
 import myAxios from "@/utils/myAxios";
 import { defineComponent, ref } from "vue";
 import { useRoute } from "vue-router";
-import Card from "@/components/card/Card.vue";
+import Card from "@/components/Card.vue";
 
 export default defineComponent({
   components: { Card },
@@ -19,30 +26,36 @@ export default defineComponent({
     const route = useRoute();
     const player = ref();
     const errorMessage = ref();
+    const isLoading = ref(true);
+
+    if (!route.params.id) {
+      errorMessage.value = "Такой комнаты не существует";
+    }
 
     const connect = async () => {
+      const playerNumber = sessionStorage.getItem("player-number");
+      const playerName = localStorage.getItem("player-name");
+      console.log("playerName", playerName);
       try {
-        const { data } = await myAxios.get(`/room/${route.params.id}`);
+        const { data } = await myAxios.post(`/room/${route.params.id}`, {
+          playerName,
+          playerNumber,
+        });
         console.log("data", data);
-        const playerNumber = sessionStorage.getItem("playerNumber");
+        player.value = data.player;
+        sessionStorage.setItem("player-number", data.playerNumber);
 
-        if (!playerNumber || typeof playerNumber !== "number") {
-          sessionStorage.setItem(
-            "playerNumber",
-            `${data.connectedPlayers - 1}`
-          );
-        }
-        player.value = data.players[sessionStorage.getItem("playerNumber")!];
-
-        if (data.message === "room-full") {
+        if (data.room.message === "room-full") {
           errorMessage.value = "Комната полная";
-          sessionStorage.removeItem("playerNumber");
+          sessionStorage.removeItem("player-number");
         }
       } catch (error: any) {
         if (error.response.data.message === "not-found") {
           errorMessage.value = "Такой комнаты не существует";
-          sessionStorage.removeItem("playerNumber");
+          sessionStorage.removeItem("player-number");
         }
+      } finally {
+        isLoading.value = false;
       }
     };
     connect();
@@ -50,7 +63,16 @@ export default defineComponent({
     return {
       player,
       errorMessage,
+      isLoading,
     };
   },
 });
 </script>
+
+<style scoped>
+.holder {
+  position: absolute;
+  overflow: hidden;
+  height: calc(100dvh - 50px);
+}
+</style>

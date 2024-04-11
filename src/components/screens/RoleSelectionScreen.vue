@@ -1,23 +1,39 @@
 <template>
-  <div>
-    <p>Количество ролей</p>
-    <RoleSelectionElement
-      v-for="(role, index) in roles"
-      :key="index"
-      :role="role"
-      :roleIndex="index"
-      @delete="deleteRole"
-      @update="updateRole"
-    />
-    <div>
-      <input v-model="newRole" type="text" placeholder="Добавить роль" />
-      <button @click="addRole">Добавить</button>
+  <AppearElement>
+    <div class="screen">
+      <div class="screen__inner-container py-4">
+        <transition-group name="list" tag="div">
+          <div key="text">
+            <p class="text-xl text-center mb-2">Количество ролей</p>
+          </div>
+          <RoleSelectionElement
+            v-for="(role, index) in roles"
+            :key="role.id"
+            :role="role"
+            :roleIndex="index"
+            @delete="deleteRole"
+            @update="updateRole"
+          />
+          <div class="flex justify-between w-[300px] my-4" key="add-role">
+            <input
+              v-model="newRole"
+              type="text"
+              placeholder="Добавить роль"
+              maxlength="100"
+            />
+            <button @click="addRole" :disabled="isDisabled">Добавить</button>
+          </div>
+          <div key="slot">
+            <slot></slot>
+          </div>
+        </transition-group>
+      </div>
     </div>
-  </div>
+  </AppearElement>
 </template>
 
 <script lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useStore } from "vuex";
 import RoleSelectionElement from "./RoleSelectionElement.vue";
 
@@ -28,6 +44,7 @@ export default {
   setup() {
     const store = useStore();
     const newRole = ref();
+    const isDisabled = computed(() => !newRole.value);
 
     const setLocalRoles = () => {
       localStorage.setItem("roles", JSON.stringify(store.state.roles.roles));
@@ -83,7 +100,24 @@ export default {
       addRole,
       deleteRole,
       updateRole,
+      isDisabled,
     };
   },
 };
 </script>
+
+<style scoped>
+.list-move,
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.5s ease;
+}
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
+.list-leave-active {
+  position: absolute;
+}
+</style>

@@ -11,14 +11,14 @@ interface State {
 
 export const rolesModule = {
   state: (): State => ({
-    roles: JSON.parse(localStorage.getItem("roles") || "[]"),
+    roles: JSON.parse(localStorage.getItem('roles') || '[]')
   }),
   getters: {
     onlyRoles(state: State): string[] {
       return state.roles.flatMap((role: Role) =>
         Array.from({ length: role.number }, () => role.name)
       );
-    },
+    }
   },
   mutations: {
     setRoles(state: State, roles: Role[]) {
@@ -33,6 +33,6 @@ export const rolesModule = {
     updateRole(state: State, payload: { index: number; number: number }) {
       const { index, number } = payload;
       state.roles[index].number = number;
-    },
-  },
+    }
+  }
 };
