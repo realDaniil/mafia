@@ -107,6 +107,10 @@ export default {
 </script>
 
 <style scoped>
+.screen {
+  overflow: hidden;
+  position: relative;
+}
 .list-move,
 .list-enter-active,
 .list-leave-active {

@@ -1,8 +1,8 @@
 <template>
   <MyLoader v-if="isLoading" />
   <div v-else>
-    <div v-if="errorMessage">
-      <p>{{ errorMessage }}</p>
+    <div v-if="errorMessage" class="holder">
+      <p class="text-xl">{{ errorMessage }}</p>
     </div>
     <div v-else class="holder">
       <Card :name="player?.name" :role="player?.role" isLoop />
@@ -35,7 +35,6 @@ export default defineComponent({
     const connect = async () => {
       const playerNumber = sessionStorage.getItem("player-number");
       const playerName = localStorage.getItem("player-name");
-      console.log("playerName", playerName);
       try {
         const { data } = await myAxios.post(`/room/${route.params.id}`, {
           playerName,
@@ -45,7 +44,7 @@ export default defineComponent({
         player.value = data.player;
         sessionStorage.setItem("player-number", data.playerNumber);
 
-        if (data.room.message === "room-full") {
+        if (data.playerNumber >= data.room.maxPlayers) {
           errorMessage.value = "Комната полная";
           sessionStorage.removeItem("player-number");
         }
