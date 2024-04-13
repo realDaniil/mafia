@@ -17,4 +17,9 @@
   padding: 0 5rem;
   box-sizing: border-box;
 }
+@media (max-width: 500px) {
+  .bottom-nav-bar {
+    padding: 0 2rem;
+  }
+}
 </style>

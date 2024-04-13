@@ -2,7 +2,7 @@
   <AppearElement>
     <div class="screen">
       <div class="screen__inner-container py-4">
-        <transition-group name="list" tag="div">
+        <transition-group name="list" tag="div" class="w-full">
           <div key="text">
             <p class="text-xl text-center mb-2">Количество ролей</p>
           </div>
@@ -14,14 +14,17 @@
             @delete="deleteRole"
             @update="updateRole"
           />
-          <div class="flex justify-between w-[300px] my-4" key="add-role">
+          <div class="flex justify-between w-full my-4">
             <input
+              class="w-full mr-2"
               v-model="newRole"
               type="text"
               placeholder="Добавить роль"
               maxlength="100"
             />
-            <button @click="addRole" :disabled="isDisabled">Добавить</button>
+            <button class="w-auto pl-2" @click="addRole" :disabled="isDisabled">
+              Добавить
+            </button>
           </div>
           <div key="slot">
             <slot></slot>

@@ -153,7 +153,7 @@ export default defineComponent({
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  padding: 1rem;
+  padding: 1rem 2rem;
   background: rgb(54, 54, 54);
   border-radius: 1rem;
 }

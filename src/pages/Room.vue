@@ -40,7 +40,6 @@ export default defineComponent({
           playerName,
           playerNumber,
         });
-        console.log("data", data);
         player.value = data.player;
         sessionStorage.setItem("player-number", data.playerNumber);
 

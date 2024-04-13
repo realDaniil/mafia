@@ -13,6 +13,7 @@ body {
   color: white;
   background: rgb(30, 30, 30);
   box-sizing: border-box;
+  touch-action: manipulation;
 }
 
 ::selection {
@@ -23,6 +24,7 @@ body {
 ::-webkit-scrollbar {
   background: transparent;
   width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -36,7 +38,7 @@ body {
 
 ::-webkit-scrollbar-thumb:active {
   background: rgb(40, 40, 40);
-} 
+}
 
 input {
   border: var(--red) 2px solid;
@@ -44,6 +46,12 @@ input {
   border-radius: 4px;
   padding: 0 4px;
   user-select: none;
+  outline: none;
+  outline: none;
+}
+
+input:focus {
+  border: 2px solid white;
 }
 
 button {
@@ -87,7 +95,8 @@ button:disabled {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
+  width: 310px;
+  max-width: 80vw;
 }
 
 .short-text {
@@ -95,4 +104,25 @@ button:disabled {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.icon {
+  position: absolute;
+  z-index: -1;
+  fill: rgb(43, 43, 43);
+  transform: translate(-40px);
+  max-height: 500px;
+  user-select: none;
+}
+
+@media (max-width: 600px) {
+  .icon {
+    transform: translate(-20px);
+  }
+}
+
+@media (max-width: 400px) {
+  .short-text {
+    max-width: 150px;
+  }
 }

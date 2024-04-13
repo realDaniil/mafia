@@ -21,31 +21,31 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent } from "vue";
 
 export default defineComponent({
   data() {
     return {
-      count: this.role.number
+      count: this.role.number,
     };
   },
-  props: ['roleIndex', 'role'],
+  props: ["roleIndex", "role"],
   methods: {
     setCount(sign: string) {
-      if (sign === 'minus') {
+      if (sign === "minus") {
         this.count = this.count > 0 ? this.count - 1 : 0;
       } else {
         this.count = this.count < 100 ? this.count + 1 : 100;
       }
-      this.$emit('update', {
+      this.$emit("update", {
         index: this.roleIndex,
-        number: this.count
+        number: this.count,
       });
     },
     deleteRole() {
-      this.$emit('delete', this.roleIndex);
-    }
-  }
+      this.$emit("delete", this.roleIndex);
+    },
+  },
 });
 </script>
 
@@ -54,7 +54,7 @@ export default defineComponent({
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 300px;
+  width: 100%;
   position: relative;
   margin-bottom: 8px;
 }
@@ -74,5 +74,10 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+@media (max-width: 400px) {
+  .delete-button {
+    right: -32px;
+  }
 }
 </style>
